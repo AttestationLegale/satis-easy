@@ -1,0 +1,15 @@
+{
+  "name": "attestationlegale/satis-easy",
+  "author": "Benjamin RICHARD <richard.tribes@gmail.com>",
+  "version": "0.0.1",
+  "licence": "MIT",
+  "bugs": {
+    "url": "https://github.com/AttestationLegale/satis-easy/issues"
+  },
+  "config": {
+    "mongourl": ""
+  },
+  "scripts": {
+    "start": "./start.sh"
+  }
+}

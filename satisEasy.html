@@ -1,0 +1,186 @@
+<head>
+    <title>satisEasy</title>
+</head>
+
+<template name="ApplicationLayout">
+    {{> menu}}
+
+    <div class="container">
+        <div class="row">
+            <div class="col s1 m2 l4">
+                {{> action }}
+            </div>
+            <div class="col s11 m10 l8 ">
+                {{> yield }}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="menu">
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo center"> SatisEasy</a>
+                <ul class="right">
+                    <li><a href="#" data-dest="/settings">Settings</a></li>
+                    <li><a href="#" data-dest="/repositories">Repositories</a></li>
+                    <li><a href="#" data-dest="/packages">Packages</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</template>
+
+<template name="action">
+    <a class="btn-floating btn-large {{isRunning}}" id="buildSatis"><i class="mdi-action-track-changes"></i></a>
+</template>
+
+<template name="settings">
+    {{> infos }}
+
+    <!--{{> archive }} -->
+</template>
+
+<template name="infos">
+    <div class="row">
+        <h3>Détails</h3>
+        <div class="input-field col s6">
+            <input id="title-input" type="text" class="validate" value="{{ title }}">
+            <label class="{{isActive title }}" for="title-input">Title</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s6">
+            <textarea id="description-input" class="materialize-textarea">{{ description }}</textarea>
+            <label class="{{isActive description }}" for="description-input">Description</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s6">
+            <input id="homepage-input" type="text" class="validate" value="{{ homepage }}">
+            <label class="{{isActive homepage }}" for="homepage-input">Homepage</label>
+        </div>
+    </div>
+    <div class="row">
+        {{#each configoauth}}
+        <div class="input-field col s6">
+            <input name="githubtoken-input-{{ tokenvalue }}" type="text" class="validate" value="{{ tokenvalue }}">
+            <label class="{{isActive githubtoken }}" for="githubtoken-input-{{ tokenvalue }}">{{ tokenname }}</label>
+        </div>
+        {{/each}}
+    </div>
+</template>
+
+<template name="archive">
+    <div class="row">
+        <h3>Archive</h3>
+        {{#with archive}}
+        <div class="input-field col s6">
+            <input type="text" class="validate" name="archive-directory-input" id="archive-directory-input" value="{{ directory }}">
+            <label class="{{isActive directory }}" for="archive-directory-input">Directory</label>
+        </div>
+        <div class="input-field col s6">
+            <input type="text" class="validate" name="archive-format-input" id="archive-format-input" value="{{ format }}">
+            <label class="{{isActive format }}" for="archive-format-input">Format</label>
+        </div>
+        <div class="input-field col s6">
+            <input type="text" class="validate"  name="archive-prefixurl-input" id="archive-prefixurl-input" value="{{ prefixUrl }}">
+            <label class="{{isActive prefixUrl }}" for="archive-prefixurl-input">Prefix Url</label>
+        </div>
+        <div class="input-field col s6">
+            <input type="checkbox" name="archive-skipdev-input" id="archive-skipdev-input" {{ archiveSkipdevIsChecked }} value="1"/>
+            <label for="archive-skipdev-input">Télécharger les dépendances</label>
+        </div>
+        {{/with}}
+    </div>
+    <div class="row">
+        <h3>Dépendances</h3>
+        <div class="input-field col s6">
+            <input type="checkbox" id="require-deps-input" {{ requireDepsIsChecked }} value="1"/>
+            <label for="require-deps-input">Télécharger les dépendances</label>
+        </div>
+        <div class="input-field col s6">
+            <input type="checkbox" id="require-deps-dev-input" {{ requireDepsDevIsChecked }} value="1"/>
+            <label for="require-deps-dev-input">Télécharger les dépendances dev</label>
+        </div>
+    </div>
+</template>
+
+<template name="repositories">
+    <div class="row">
+        <h3>Repositories</h3>
+    </div>
+
+    {{#each repositories}}
+        {{> repositories_row}}
+    {{/each}}
+
+
+    <div class="row">
+        <div class="col m2">composer</div>
+        <div class="col m6">
+            <input type="text" class="addRepo" name="url" id="addRepo-url-input" value=""/>
+            <label for="addRepo-input">Repository</label>
+        </div>
+        <div class="col m4">
+            <button type="button" class="btn waves-effect waves-light red darken-1" title="reset" name="resetRepo"><i class="mdi-action-highlight-remove"></i></button>
+            <button type="button" class="btn waves-effect waves-light" title="add" name="addRepo"><i class="mdi-content-send right"></i></button>
+        </div>
+    </div>
+
+</template>
+
+<template name="repositories_row">
+    <div class="row">
+        <div class="col m2">{{type}}</div>
+        <div class="col m6">
+            <input type="text" class="editRepo" name="url" id="editRepo-url-{{_id}}-input" value="{{url}}" />
+            <label for="editRepo-{{_id}}">Repository</label>
+        </div>
+        <div class="col m4">
+            <button type="button" class="btn waves-effect waves-light  red darken-1" title="remove" name="removeRepo"><i class="mdi-action-highlight-remove"></i></button>
+            <button type="button" class="btn waves-effect waves-light" title="edit" name="editRepo"><i class="mdi-content-send right"></i></button>
+        </div>
+    </div>
+</template>
+
+<template name="packages">
+    <h3>Packages</h3>
+
+    {{#each packages}}
+        {{> packages_row}}
+    {{/each}}
+
+    <div class="row">
+        <div class="col m4">
+            <input type="text" class="addPackage" name="package-name" id="addPackage-name-input" value="" />
+            <label for="addPackage-name-input">Name</label>
+        </div>
+        <div class="col m4">
+            <input type="text" class="addPackage" name="package-version" id="addPackage-version-input" value="" />
+            <label for="addPackage-version-input">Version</label>
+        </div>
+        <div class="col m4">
+            <button type="button" class="btn waves-effect waves-light red darken-1" title="reset" name="resetPackage"><i class="mdi-action-highlight-remove"></i></button>
+            <button type="button" class="btn waves-effect waves-light" title="add" name="addPackage"><i class="mdi-content-send right"></i></button>
+        </div>
+    </div>
+</template>
+
+<template name="packages_row">
+    <div class="row">
+        <div class="col m4">
+            <input type="text" class="editPackage" name="package-name-{{ _id }}" id="editPackage-name-{{ _id }}-input" value="{{ name }}"/>
+            <label for="editPackage-name-{{ _id }}-input">Name</label>
+        </div>
+        <div class="col m4">
+            <input type="text" class="editPackage" name="package-version-{{ _id }}" id="editPackage-version-{{ _id }}-input" value="{{ version }}" />
+            <label for="editPackage-version-{{ _id }}-input">Version</label>
+        </div>
+        <div class="col m4">
+            <button type="button" class="btn waves-effect waves-light red darken-1" title="remove" name="removePackage"><i class="mdi-action-highlight-remove"></i></button>
+            <button type="button" class="btn waves-effect waves-light" title="edit" name="editPackage"><i class="mdi-content-send right"></i></button>
+        </div>
+    </div>
+</template>

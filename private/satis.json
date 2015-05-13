@@ -1,0 +1,29 @@
+{
+    "name": "{{ title }}",
+    "homepage": "{{ homepage }}",
+    "description": "{{ description }}",
+    "repositories": [
+	{{#each repositories}}
+        { "type": "{{ type }}", "url": "{{ url }}" } {{#if isNotLast}}, {{/if}}
+	{{/each}}
+    ],
+    {{#if hasPackages}}
+    "require": {
+        {{#each packages}}
+        "{{ name }}": "{{ version }}" {{#if isNotLast}}, {{/if}}
+        {{/each}}
+    }
+    {{/if}}
+    {{#unless hasPackages}}
+    "require-all": true
+    {{/unless}}
+    ,
+    "config": {
+        "github-oauth": {
+            {{#each configGithubOauth}}
+            "{{ name }}": "{{ token }}" {{#if isNotLast}}, {{/if}}
+            {{/each}}
+        }
+    }
+}
+

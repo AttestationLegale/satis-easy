@@ -1,0 +1,6 @@
+@echo off
+
+IF [%NPM_PACKAGE_CONFIG_MONGOURL%] NEQ [] SET MONGO_URL=%NPM_PACKAGE_CONFIG_MONGOURL%
+IF [%1] NEQ [] SET MONGO_URL=%1
+
+meteor --settings settings.json
