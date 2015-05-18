@@ -1,6 +1,6 @@
 {
   "satisBinary": "bin/satis",
-  "satisJsonPath": "data/satis.json",
+  "satisJson": "data/satis.json",
   "buildDir": "satis/build",
   "saveDir": "/tmp",
 
