@@ -284,7 +284,8 @@ if (Meteor.isServer) {
                 console.log('Informations section provisionned title/homepage/description/config.github-oauth datas');
             }
 
-            if (!Repositories.find().count()) {
+            if (!Repositories.find().count()
+		&& json.repositories) {
                 _.each(json.repositories, function initRepositoriesWithJsonContent(repo) {
                     Repositories.insert(repo);
                 });
@@ -292,7 +293,8 @@ if (Meteor.isServer) {
                 console.log('Repositories section provisionned with ' + _.size(json.repositories) + ' repo');
             }
 
-            if (!Packages.find().count()) {
+            if (!Packages.find().count()
+		&& json.require) {
                 var keys = _.keys(json.require);
                 _.each(keys, function initPackagesWithJsonContent(key) {
                     var dataPackage = {
