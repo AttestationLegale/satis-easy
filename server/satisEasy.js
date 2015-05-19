@@ -249,7 +249,7 @@ Meteor.methods({
         try {
             var res = exec(phpCmd);
         } catch (e) {
-            console.error('exec failed', res);
+            console.error('exec failed (cmd: %s)', phpCmd);
             console.error(e);
         }
 
