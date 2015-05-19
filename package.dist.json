@@ -10,6 +10,6 @@
     "mongourl": ""
   },
   "scripts": {
-    "start": "./start.sh"
+    "start": "./bin/start.sh"
   }
 }
