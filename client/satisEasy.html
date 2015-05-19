@@ -21,7 +21,11 @@
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper">
-                <a href="#!" class="brand-logo center"> SatisEasy</a>
+                <ul class="left">
+                    <li><a href="#" id="gotoSatis-btn" class="btn waves-effect red lighten-4">Show Satis</a></li>
+                    <li title="Last Build"><a class="new badge"><i class="mdi-action-history left"></i>{{ getLastBuildDate }}</a></li>
+                </ul>
+                <a href="#!" class="brand-logo center">SatisEasy</a>
                 <ul class="right">
                     <li><a href="#" data-dest="/settings">Settings</a></li>
                     <li><a href="#" data-dest="/repositories">Repositories</a></li>
@@ -33,7 +37,7 @@
 </template>
 
 <template name="action">
-    <a class="btn-floating btn-large {{isRunning}}" id="buildSatis"><i class="mdi-action-track-changes"></i></a>
+    <a class="btn-floating btn-large {{isRunning}}" id="buildSatis" title="Force build"><i class="mdi-action-track-changes"></i></a>
 </template>
 
 <template name="settings">
@@ -119,11 +123,11 @@
 
     <div class="row">
         <div class="col m2">composer</div>
-        <div class="col m6">
-            <input type="text" class="addRepo" name="url" id="addRepo-url-input" value=""/>
+        <div class="input-field col m6">
+            <input type="text" class="addRepo validate" name="url" id="addRepo-url-input" value=""/>
             <label for="addRepo-input">Repository</label>
         </div>
-        <div class="col m4">
+        <div class="input-field col m4">
             <button type="button" class="btn waves-effect waves-light red darken-1" title="reset" name="resetRepo"><i class="mdi-action-highlight-remove"></i></button>
             <button type="button" class="btn waves-effect waves-light" title="add" name="addRepo"><i class="mdi-content-send right"></i></button>
         </div>
@@ -134,9 +138,9 @@
 <template name="repositories_row">
     <div class="row">
         <div class="col m2">{{type}}</div>
-        <div class="col m6">
-            <input type="text" class="editRepo" name="url" id="editRepo-url-{{_id}}-input" value="{{url}}" />
-            <label for="editRepo-{{_id}}">Repository</label>
+        <div class="input-field col m6">
+            <input type="text" class="editRepo validate" name="url" id="editRepo-url-{{_id}}-input" value="{{url}}" />
+            <label for="editRepo-{{_id}}" class="{{isActive url }}">Repository</label>
         </div>
         <div class="col m4">
             <button type="button" class="btn waves-effect waves-light  red darken-1" title="remove" name="removeRepo"><i class="mdi-action-highlight-remove"></i></button>
@@ -153,12 +157,12 @@
     {{/each}}
 
     <div class="row">
-        <div class="col m4">
-            <input type="text" class="addPackage" name="package-name" id="addPackage-name-input" value="" />
+        <div class="input-field col m4">
+            <input type="text" class="addPackage validate" name="package-name" id="addPackage-name-input" value="" />
             <label for="addPackage-name-input">Name</label>
         </div>
-        <div class="col m4">
-            <input type="text" class="addPackage" name="package-version" id="addPackage-version-input" value="" />
+        <div class="input-field col m4">
+            <input type="text" class="addPackage validate" name="package-version" id="addPackage-version-input" value="" />
             <label for="addPackage-version-input">Version</label>
         </div>
         <div class="col m4">
@@ -170,13 +174,13 @@
 
 <template name="packages_row">
     <div class="row">
-        <div class="col m4">
-            <input type="text" class="editPackage" name="package-name-{{ _id }}" id="editPackage-name-{{ _id }}-input" value="{{ name }}"/>
-            <label for="editPackage-name-{{ _id }}-input">Name</label>
+        <div class="input-field col m4">
+            <input type="text" class="editPackage validate" name="package-name-{{ _id }}" id="editPackage-name-{{ _id }}-input" value="{{ name }}"/>
+            <label for="editPackage-name-{{ _id }}-input" class="{{isActive name }}">Name</label>
         </div>
-        <div class="col m4">
-            <input type="text" class="editPackage" name="package-version-{{ _id }}" id="editPackage-version-{{ _id }}-input" value="{{ version }}" />
-            <label for="editPackage-version-{{ _id }}-input">Version</label>
+        <div class="input-field col m4">
+            <input type="text" class="editPackage validate" name="package-version-{{ _id }}" id="editPackage-version-{{ _id }}-input" value="{{ version }}" />
+            <label for="editPackage-version-{{ _id }}-input" class="{{isActive version }}">Version</label>
         </div>
         <div class="col m4">
             <button type="button" class="btn waves-effect waves-light red darken-1" title="remove" name="removePackage"><i class="mdi-action-highlight-remove"></i></button>

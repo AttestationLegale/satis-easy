@@ -7,6 +7,7 @@
 meteor-platform
 autopublish
 insecure
+retry
 meteorhacks:ssr
 materialize:materialize
 underscore

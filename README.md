@@ -4,12 +4,12 @@ A simple satis.json file generator to help you to manage your private repositori
 
 ## Installation
 
-* Like any meteorJs application.
-* Copy the package.dist.json to package.json.
-* Copy the settings.dist.json to settings.json.
+* Like any meteorJs application
+* Copy the package.dist.json to package.json
+* Copy the settings.dist.json to settings.json
 * Follow next section "Configuration" 
 * chmod 755 start.sh
-* run the app with ./start.sh or start.bat
+* run the app with "npm start", or directly with ./start.sh or start.bat (if you don't set config in package.json)
 
 ## Configuration
 
@@ -38,7 +38,6 @@ In the settings.json file you have some configuration to customize:
    }
 ```
         
-* Split code between client/server/lib
 * Do check on input fields : check url, check packages : version constraints and naming, ...
 * Do automated test
 * Add Realtime ergonomy by displaying what has changed/removed/inserted to all connected user (less priority coz that app will not be heavily used)
@@ -47,5 +46,6 @@ In the settings.json file you have some configuration to customize:
 
 * Manage Archive section
 * Manage Other kind of repositories than only "composer" type
+* When build failed, display message to all users (store last error only ?)
  
 * Maybe don't use anymore satis to build, but generate the html directly with this tool, we already have required data.
