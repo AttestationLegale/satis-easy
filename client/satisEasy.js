@@ -70,7 +70,7 @@ Template.menu.helpers({
     "getLastBuildDate": function tplMenuGetLastBuildDate() {
         var build = BuildRunning.findOne();
 
-        return build ? build.endDate.toLocaleString() : '...';
+        return build && build.endDate ? build.endDate.toLocaleString() : '...';
     }
 });
 
