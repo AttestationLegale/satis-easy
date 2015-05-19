@@ -121,8 +121,14 @@
     {{/each}}
 
 
-    <div class="row">
-        <div class="col m2">composer</div>
+    <div class="row" id="addRepo">
+        <div class="input-field col m2">
+            <select name="type" id="addRepo-type-input">
+                <option value="vcs">vcs</option>
+                <option value="composer">composer</option>
+            </select>
+            <label>Type</label>
+        </div>
         <div class="input-field col m6">
             <input type="text" class="addRepo validate" name="url" id="addRepo-url-input" value=""/>
             <label for="addRepo-input">Repository</label>
@@ -136,8 +142,14 @@
 </template>
 
 <template name="repositories_row">
-    <div class="row">
-        <div class="col m2">{{type}}</div>
+    <div class="row" id="edit-{{_id}}">
+        <div class="input-field col m2">
+            <select name="type" id="addRepo-type-input">
+                <option value="vcs" {{isSelected "vcs"}}>vcs</option>
+                <option value="composer" {{isSelected "composer"}}>composer</option>
+            </select>
+            <label>Type</label>
+        </div>
         <div class="input-field col m6">
             <input type="text" class="editRepo validate" name="url" id="editRepo-url-{{_id}}-input" value="{{url}}" />
             <label for="editRepo-{{_id}}" class="{{isActive url }}">Repository</label>

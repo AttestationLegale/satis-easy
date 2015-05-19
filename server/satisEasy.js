@@ -172,7 +172,7 @@ Meteor.methods({
                     total = Packages.find({}).count(),
                     counter = 0;
 
-                Packages.find({}, {sort: {title: 1}}).forEach(function ssrEachPAckages(item) {
+                Packages.find({}, {sort: {name: 1}}).forEach(function ssrEachPackages(item) {
                     counter++;
                     _.extend(item, {isNotLast: (counter < total)});
                     packages.insert(item);
