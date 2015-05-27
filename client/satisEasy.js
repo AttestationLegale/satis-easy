@@ -243,8 +243,8 @@ Template.packages.events({
 Template.packages_row.events({
     'click button[name="editPackage"]': function tplRowPackagesClickEditPackage(ev, tpl) {
         var data = {
-            version: tpl.find('input#editPackage-name-' + this._id + '-input').value,
-            name: tpl.find('input#editPackage-version-' + this._id + '-input').value
+            version: tpl.find('input#editPackage-version-' + this._id + '-input').value,
+            name: tpl.find('input#editPackage-name-' + this._id + '-input').value
         };
 
         // save
