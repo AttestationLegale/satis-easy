@@ -144,7 +144,7 @@
 <template name="repositories_row">
     <div class="row" id="edit-{{_id}}">
         <div class="input-field col m2">
-            <select name="type" id="addRepo-type-input">
+            <select name="type" class="editRepo validate" id="editRepo-type-input">
                 <option value="vcs" {{isSelected "vcs"}}>vcs</option>
                 <option value="composer" {{isSelected "composer"}}>composer</option>
             </select>
