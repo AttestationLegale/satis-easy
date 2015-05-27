@@ -10,7 +10,7 @@
     {{#if hasPackages}}
     "require": {
         {{#each packages}}
-        "{{ name }}": "{{ version }}" {{#if isNotLast}}, {{/if}}
+        "{{ name }}": "{{{ version }}}" {{#if isNotLast}}, {{/if}}
         {{/each}}
     }
     {{/if}}
