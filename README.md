@@ -48,5 +48,6 @@ In the settings.json file you have some configuration to customize:
 * Manage Other kind of repositories than only "composer" type
 * When build failed, display message to all users (store last error only ?)
 * Fix the button ForceBuild on top using pushpin of Materialize 
+* When editing a field (packages or repos) we have to click on validate, but we may forget so we will loose everything when going out the app or changing page: we should save data in db on blur, and ask for a generate only on click
  
 * Maybe don't use anymore satis to build, but generate the html directly with this tool, we already have required data.
