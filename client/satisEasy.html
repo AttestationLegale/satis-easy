@@ -7,11 +7,11 @@
 
     <div class="container">
         <div class="row">
-            <div class="col s1 m2 l4">
-                {{> action }}
-            </div>
             <div class="col s11 m10 l8 ">
                 {{> yield }}
+            </div>
+            <div class="col s1 m2 l4">
+                {{> action }}
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
 </template>
 
 <template name="action">
-    <a class="btn-floating btn-large {{isRunning}}" id="buildSatis" title="Force build"><i class="mdi-action-track-changes"></i></a>
+    <a class="btn-floating btn-large {{isRunning}} {{#if isNeeded}}yellow darken{{/if}}" id="buildSatis" title="Force build"><i class="mdi-action-track-changes"></i></a>
 </template>
 
 <template name="settings">
@@ -156,7 +156,6 @@
         </div>
         <div class="col m4">
             <button type="button" class="btn waves-effect waves-light  red darken-1" title="remove" name="removeRepo"><i class="mdi-action-highlight-remove"></i></button>
-            <button type="button" class="btn waves-effect waves-light" title="edit" name="editRepo"><i class="mdi-content-send right"></i></button>
         </div>
     </div>
 </template>
@@ -196,7 +195,6 @@
         </div>
         <div class="col m4">
             <button type="button" class="btn waves-effect waves-light red darken-1" title="remove" name="removePackage"><i class="mdi-action-highlight-remove"></i></button>
-            <button type="button" class="btn waves-effect waves-light" title="edit" name="editPackage"><i class="mdi-content-send right"></i></button>
         </div>
     </div>
 </template>

@@ -196,13 +196,14 @@ Meteor.methods({
     },
 
     "build": function methodsBuild(retries) {
-        var build = BuildRunning.findOne({}, {_id: true}),
-            phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir,
-            // phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + Meteor.settings.satisJson + ' ' + Meteor.settings.buildDir,
+        var buildRunning = BuildRunning.findOne({}, {_id: true}),
+            buildNeeded = BuildNeeded.findOne({}, {_id: true}),
+            phpCmd = 'php ' + Meteor.settings.satisBinary + ' buildRunning ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir,
+            // phpCmd = 'php ' + Meteor.settings.satisBinary + ' buildRunning ' + Meteor.settings.satisJson + ' ' + Meteor.settings.buildDir,
             childProcess = Npm.require('child_process'),
             exec = Meteor.wrapAsync(childProcess.exec);
 
-        // launch build only if no job running, ask to retry
+        // launch buildRunning only if no job running, ask to retry
         var job = BuildRunning.findOne();
         if (job.running !== 0) {
             var retry = new Retry({
@@ -212,7 +213,7 @@ Meteor.methods({
                 retries = retries && _.isNumber(retries) ? retries : 0,
                 buildAgain = function buildAgain() {
                     retries++;
-                    Meteor.call('build', retries, function methodBuildAgain(err, res) {
+                    Meteor.call('buildRunning', retries, function methodBuildAgain(err, res) {
                         if (!err) {
                             console.info('Build succeed');
                             return;
@@ -240,7 +241,7 @@ Meteor.methods({
         }
 
         BuildRunning.update({
-            _id: build._id
+            _id: buildRunning._id
         }, {
             $set: {
                 running: 1,
@@ -250,18 +251,33 @@ Meteor.methods({
 
         try {
             var res = exec(phpCmd);
+
+            BuildNeeded.update({
+                _id: buildNeeded._id
+            }, {
+                needed: 0,
+                endDate: new Date()
+            });
         } catch (e) {
             console.error('exec failed (cmd: %s)', phpCmd);
             console.error(e);
+
+            var error = e;
+        }
+
+        var data = {
+            running: 0,
+            endDate: new Date()
+        };
+
+        if (error) {
+            _.extend(data, {error: error});
         }
 
         BuildRunning.update({
-            _id: build._id
+            _id: buildRunning._id
         }, {
-            $set: {
-                running: 0,
-                endDate: new Date()
-            }
+            $set: data
         });
 
         // @TODO check res to alert user if everything is ok or if an error happened

@@ -9,6 +9,17 @@ var helperIsActive = function helperIsActive() {
 };
 UI.registerHelper('isActive', helperIsActive);
 
+// inform that it needs to re-generate file and ask satis to build
+var buildNeeded = function buildNeeded() {
+    var buildNeeded = BuildNeeded.findOne();
+
+    BuildNeeded.update({
+        _id: buildNeeded._id
+    }, {
+        needed: 1
+    });
+};
+
 Template.menu.onRendered(function tplMenuOnRendered() {
     $(document).ready(function tplMenuDocumentReady(){
         $('.navbar-fixed').pushpin({ top: $('.navbar-fixed').offset().top });
@@ -26,6 +37,17 @@ Template.action.helpers({
         }
 
         return disabled;
+    },
+
+    'isNeeded': function tplMenuIsNeeded() {
+        var buildNeeded = BuildNeeded.findOne();
+
+        if (buildNeeded
+            && buildNeeded._id) {
+            return true;
+        }
+
+        return false;
     }
 });
 
@@ -200,9 +222,7 @@ Template.repositories_row.events({
         Repositories.update({_id: this._id}, {$set: data});
 
         // generate file and ask satis to build
-        if (ev.type === 'click') {
-            Meteor.call('generate');
-        }
+        buildNeeded();
     },
 
     'click button[name="removeRepo"]': function tplRowRepositoriesClickRemoveRepo(ev, tpl) {
@@ -243,19 +263,17 @@ Template.packages.events({
 });
 
 Template.packages_row.events({
-    'blur input.editPackage, click button[name="editPackage"]': function tplRowPackagesClickEditPackage(ev, tpl) {
+    'blur input.editPackage': function tplRowPackagesClickEditPackage(ev, tpl) {
         var data = {
             version: tpl.find('input#editPackage-version-' + this._id + '-input').value,
             name: tpl.find('input#editPackage-name-' + this._id + '-input').value
-        };
+        },
+            buildNeeded = BuildNeeded.findOne();
 
         // save
         Packages.update({_id: this._id}, {$set: data});
 
-        // generate file and ask satis to build
-        if (ev.type === 'click') {
-            Meteor.call('generate');
-        }
+        buildNeeded();
     },
 
     'click button[name="removePackage"]': function tplPackagesClickRemovePackage(ev, tpl) {
