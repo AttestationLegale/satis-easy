@@ -20,6 +20,10 @@ Meteor.startup(function serverOnStartup() {
         BuildRunning.insert({running: 0});
     }
 
+    if (!BuildNeeded.find().count()) {
+        BuildNeeded.insert({needed: 0});
+    }
+
     (function initDb() {
         // create default satis file
         if (!fs.existsSync(Meteor.settings.satisJson)) {
@@ -196,10 +200,11 @@ Meteor.methods({
     },
 
     "build": function methodsBuild(retries) {
-        var buildRunning = BuildRunning.findOne({}, {_id: true}),
+        var modifiers = {},
+            buildRunning = BuildRunning.findOne({}, {_id: true}),
             buildNeeded = BuildNeeded.findOne({}, {_id: true}),
-            phpCmd = 'php ' + Meteor.settings.satisBinary + ' buildRunning ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir,
-            // phpCmd = 'php ' + Meteor.settings.satisBinary + ' buildRunning ' + Meteor.settings.satisJson + ' ' + Meteor.settings.buildDir,
+            phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir,
+            // phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + Meteor.settings.satisJson + ' ' + Meteor.settings.buildDir,
             childProcess = Npm.require('child_process'),
             exec = Meteor.wrapAsync(childProcess.exec);
 
@@ -250,6 +255,7 @@ Meteor.methods({
         });
 
         try {
+            console.log(phpCmd);
             var res = exec(phpCmd);
 
             BuildNeeded.update({
@@ -260,25 +266,30 @@ Meteor.methods({
             });
         } catch (e) {
             console.error('exec failed (cmd: %s)', phpCmd);
+            console.warn('oups start');
             console.error(e);
+            console.warn('oups end');
 
             var error = e;
         }
 
-        var data = {
+        var setData = {
             running: 0,
             endDate: new Date()
-        };
+        },
+            unsetData = {};
 
         if (error) {
-            _.extend(data, {error: error});
+            _.extend(setData, {error: error});
+        } else {
+            _.extend(modifiers, {$unset: {error: ""}});
         }
+
+        _.extend(modifiers, {$set: setData});
 
         BuildRunning.update({
             _id: buildRunning._id
-        }, {
-            $set: data
-        });
+        }, modifiers);
 
         // @TODO check res to alert user if everything is ok or if an error happened
     }

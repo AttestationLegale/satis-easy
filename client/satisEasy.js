@@ -10,7 +10,7 @@ var helperIsActive = function helperIsActive() {
 UI.registerHelper('isActive', helperIsActive);
 
 // inform that it needs to re-generate file and ask satis to build
-var buildNeeded = function buildNeeded() {
+var upBuildNeeded = function buildNeeded() {
     var buildNeeded = BuildNeeded.findOne();
 
     BuildNeeded.update({
@@ -24,6 +24,22 @@ Template.menu.onRendered(function tplMenuOnRendered() {
     $(document).ready(function tplMenuDocumentReady(){
         $('.navbar-fixed').pushpin({ top: $('.navbar-fixed').offset().top });
     });
+});
+
+Template.action.onRendered(function tplActionOnCreated() {
+    $(document).ready(function(){
+        $('#buildSatis').pushpin({ offset: ($('.navbar-fixed').offset().top + 85) });
+    });
+});
+
+Tracker.autorun(function() {
+   var buildRunning = BuildRunning.findOne();
+
+   if (buildRunning
+       && buildRunning.error) {
+       Materialize.toast("An error happened on server, ask your admin to look at the logs or in the BuildRunning collections", 10000);
+       console.warn(buildRunning.error.stack);
+   }
 });
 
 Template.action.helpers({
@@ -43,7 +59,7 @@ Template.action.helpers({
         var buildNeeded = BuildNeeded.findOne();
 
         if (buildNeeded
-            && buildNeeded._id) {
+            && buildNeeded.needed) {
             return true;
         }
 
@@ -60,7 +76,7 @@ Template.action.events({
             return;
         }
 
-        Meteor.call('build');
+        Meteor.call('generate');
     }
 });
 
@@ -222,7 +238,7 @@ Template.repositories_row.events({
         Repositories.update({_id: this._id}, {$set: data});
 
         // generate file and ask satis to build
-        buildNeeded();
+        upBuildNeeded();
     },
 
     'click button[name="removeRepo"]': function tplRowRepositoriesClickRemoveRepo(ev, tpl) {
@@ -273,7 +289,7 @@ Template.packages_row.events({
         // save
         Packages.update({_id: this._id}, {$set: data});
 
-        buildNeeded();
+        upBuildNeeded();
     },
 
     'click button[name="removePackage"]': function tplPackagesClickRemovePackage(ev, tpl) {
