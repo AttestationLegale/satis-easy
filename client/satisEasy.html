@@ -47,6 +47,7 @@
 </template>
 
 <template name="infos">
+    {{#with infos}}
     <div class="row">
         <h3>Détails</h3>
         <div class="input-field col s6">
@@ -74,6 +75,7 @@
         </div>
         {{/each}}
     </div>
+    {{/with}}
 </template>
 
 <template name="archive">
