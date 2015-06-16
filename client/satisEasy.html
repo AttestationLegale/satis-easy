@@ -117,12 +117,16 @@
     <div class="row">
         <h3>Repositories</h3>
     </div>
+    
+    {{> repository_add}}
 
     {{#each repositories}}
         {{> repositories_row}}
     {{/each}}
 
+</template>
 
+<template name="repository_add">
     <div class="row" id="addRepo">
         <div class="input-field col m2">
             <select name="type" id="addRepo-type-input">
@@ -140,7 +144,6 @@
             <button type="button" class="btn waves-effect waves-light" title="add" name="addRepo"><i class="mdi-content-send right"></i></button>
         </div>
     </div>
-
 </template>
 
 <template name="repositories_row">
@@ -165,10 +168,15 @@
 <template name="packages">
     <h3>Packages</h3>
 
+    {{> package_add}}
+
     {{#each packages}}
         {{> packages_row}}
     {{/each}}
 
+</template>
+
+<template name="package_add">
     <div class="row">
         <div class="input-field col m4">
             <input type="text" class="addPackage validate" name="package-name" id="addPackage-name-input" value="" />
