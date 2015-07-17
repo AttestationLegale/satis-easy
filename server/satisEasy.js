@@ -187,6 +187,16 @@ Meteor.methods({
 
             hasPackages: function ssrHasPackages() {
                 return Packages.find().count();
+            },
+
+            archive: function ssrArchive() {
+                var hp = Informations.findOne() ? Informations.findOne().archive : null;
+
+                return hp;
+            },
+
+            hasArchive: function ssrHasArchive() {
+                return !!this.archive();
             }
         });
 

@@ -43,7 +43,7 @@
 <template name="settings">
     {{> infos }}
 
-    <!--{{> archive }} -->
+    {{> archive }}
 </template>
 
 <template name="infos">
@@ -81,31 +81,43 @@
 <template name="archive">
     <div class="row">
         <h3>Archive</h3>
-        {{#with archive}}
+    </div>
+    {{#with archive}}
+    <div class="row">
         <div class="input-field col s6">
             <input type="text" class="validate" name="archive-directory-input" id="archive-directory-input" value="{{ directory }}">
             <label class="{{isActive directory }}" for="archive-directory-input">Directory</label>
         </div>
+    </div>
+    <div class="row">
         <div class="input-field col s6">
             <input type="text" class="validate" name="archive-format-input" id="archive-format-input" value="{{ format }}">
             <label class="{{isActive format }}" for="archive-format-input">Format</label>
         </div>
+    </div>
+    <div class="row">
         <div class="input-field col s6">
             <input type="text" class="validate"  name="archive-prefixurl-input" id="archive-prefixurl-input" value="{{ prefixUrl }}">
             <label class="{{isActive prefixUrl }}" for="archive-prefixurl-input">Prefix Url</label>
         </div>
-        <div class="input-field col s6">
-            <input type="checkbox" name="archive-skipdev-input" id="archive-skipdev-input" {{ archiveSkipdevIsChecked }} value="1"/>
-            <label for="archive-skipdev-input">Télécharger les dépendances</label>
-        </div>
-        {{/with}}
     </div>
     <div class="row">
+        <div class="input-field col s6">
+            <input type="checkbox" name="archive-skipdev-input" id="archive-skipdev-input" {{ archiveSkipdevIsChecked }} value="1"/>
+            <label for="archive-skipdev-input">Skip Dev</label>
+        </div>
+    </div>
+    {{/with}}
+    <div class="row">
         <h3>Dépendances</h3>
+    </div>
+    <div class="row">
         <div class="input-field col s6">
             <input type="checkbox" id="require-deps-input" {{ requireDepsIsChecked }} value="1"/>
             <label for="require-deps-input">Télécharger les dépendances</label>
         </div>
+    </div>
+    <div class="row">
         <div class="input-field col s6">
             <input type="checkbox" id="require-deps-dev-input" {{ requireDepsDevIsChecked }} value="1"/>
             <label for="require-deps-dev-input">Télécharger les dépendances dev</label>

@@ -167,13 +167,42 @@ Template.archive.helpers({
     archive: function tplArchiveArchive() {
         var infos = Informations.findOne();
 
-        return infos ? infos.archive : null;
+        return infos.archive ? infos.archive : {};
     },
 
     isActive: function tplArchiveIsActive() {
         if (arguments[0]) {
             return 'active ';
         }
+    }
+});
+
+Template.archive.events({
+    'blur #archive input, change #archive checkbox': function tplArchiveBlur(ev, tpl) {
+        var data = {
+            directory: tpl.find('input#archive-directory-input').value,
+            format: tpl.find('input#archive-format-input').value,
+            prefixUrl: tpl.find('input#archive-prefixurl-input').value,
+            skipDev: tpl.find('#archive .select-dropdown').value ? "true" : "false",
+            requireDeps: tpl.find('#archive .select-dropdown').value ? "true" : "false",
+            requireDevDeps: tpl.find('#archive .select-dropdown').value ? "true" : "false"
+        };
+
+        // save
+        Repositories.insert(data);
+
+        // reset
+        tpl.find('button[name="resetRepo"]').click();
+
+        // generate file and ask satis to build
+        Meteor.call('generate');
+    },
+
+    'click button[name="resetRepo"]': function tplRepositoriesClickResetRepo(ev, tpl) {
+        _.each(tpl.findAll('input.addRepo'), function tplRepositoriesResatRepoEach(item) {
+            item.value = '';
+        });
+        tpl.find('.select-dropdown').value = 'vcs';
     }
 });
 
