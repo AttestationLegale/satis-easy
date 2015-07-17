@@ -165,36 +165,64 @@ Template.infos.helpers({
 
 Template.archive.helpers({
     archive: function tplArchiveArchive() {
-        var infos = Informations.findOne();
+        var infos = Informations.findOne(),
+            basicInfos = infos ? {_id: infos._id} : {},
+            toReturn = infos && infos.archive ? _.extend(basicInfos, infos.archive) : basicInfos;
 
-        return infos.archive ? infos.archive : {};
+        return toReturn;
     },
 
     isActive: function tplArchiveIsActive() {
         if (arguments[0]) {
             return 'active ';
         }
+    },
+
+    isCheckedArchiveSkipDev: function tplArchiveIsChecked() {
+        var infos = Informations.findOne();
+
+        if (!infos || ! infos.archive) return;
+
+        if (infos.archive.skipDev) return 'checked';
+    },
+
+    isCheckedRequireDeps: function tplArchiveIsChecked() {
+        var infos = Informations.findOne();
+
+        if (!infos || ! infos.archive) return;
+
+        if (infos.archive.requireDeps) return 'checked';
+    },
+
+    isCheckedRequireDevDeps: function tplArchiveIsChecked() {
+        var infos = Informations.findOne();
+
+        if (!infos || ! infos.archive) return;
+
+        if (infos.archive.requireDevDeps) return 'checked';
     }
 });
 
 Template.archive.events({
-    'blur #archive input, change #archive checkbox': function tplArchiveBlur(ev, tpl) {
+    'blur input[type=text], change input[type=checkbox]': function tplArchiveBlur(ev, tpl) {
         var data = {
             directory: tpl.find('input#archive-directory-input').value,
             format: tpl.find('input#archive-format-input').value,
             prefixUrl: tpl.find('input#archive-prefixurl-input').value,
-            skipDev: tpl.find('#archive .select-dropdown').value ? "true" : "false",
-            requireDeps: tpl.find('#archive .select-dropdown').value ? "true" : "false",
-            requireDevDeps: tpl.find('#archive .select-dropdown').value ? "true" : "false"
+            skipDev: tpl.find('input#archive-skipdev-input').checked ? true : false,
+            requireDeps: tpl.find('input#archive-requiredeps-input').checked ? true : false,
+            requireDevDeps: tpl.find('input#archive-requiredevdeps-input').checked ? true : false
         };
 
+        // checks
+        if (!_.contains(['tar', 'zip'], data.format)) {
+            Materialize.toast("Format must be tar or zip, you filled " + data.format, 5000);
+            delete data.format;
+        }
+
         // save
-        Repositories.insert(data);
+        Informations.update({_id: this._id}, {$set: {archive: data}});
 
-        // reset
-        tpl.find('button[name="resetRepo"]').click();
-
-        // generate file and ask satis to build
         Meteor.call('generate');
     },
 

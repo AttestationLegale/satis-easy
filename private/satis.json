@@ -29,14 +29,14 @@
     ,
     {{#with archive}}
     "archive": {
-        "directory": {{ directory }},
-        "format": {{ format }},
-        "prefix-url": {{ prefixUrl }},
+        "directory": "{{ directory }}",
+        "format": "{{ format }}",
+        "prefix-url": "{{ prefixUrl }}",
         "skip-dev": {{ skipDev }}
     },
-    {{/with}}
     "require-dependencies": {{ requireDeps }},
     "require-dev-dependencies": {{ requireDevDeps }}
+    {{/with}}
     {{/if}}
 }
 

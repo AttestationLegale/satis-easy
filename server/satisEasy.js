@@ -190,9 +190,16 @@ Meteor.methods({
             },
 
             archive: function ssrArchive() {
-                var hp = Informations.findOne() ? Informations.findOne().archive : null;
+                var hp = Informations.findOne(),
+                    archive = hp && hp.archive ? hp.archive : null;
 
-                return hp;
+                _.extend(archive, {
+                    skipDev: (archive.skipDev ? "true" : "false"),
+                    requireDeps: (archive.requireDeps ? "true" : "false"),
+                    requireDevDeps: (archive.requireDevDeps ? "true" : "false")
+                });
+
+                return archive;
             },
 
             hasArchive: function ssrHasArchive() {
