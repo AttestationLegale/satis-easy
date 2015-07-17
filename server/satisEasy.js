@@ -220,7 +220,7 @@ Meteor.methods({
         var modifiers = {},
             buildRunning = BuildRunning.findOne({}, {_id: true}),
             buildNeeded = BuildNeeded.findOne({}, {_id: true}),
-            phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir,
+            phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir + ' --skip-errors',
             // phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + Meteor.settings.satisJson + ' ' + Meteor.settings.buildDir,
             childProcess = Npm.require('child_process'),
             exec = Meteor.wrapAsync(childProcess.exec);
