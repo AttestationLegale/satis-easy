@@ -165,15 +165,72 @@ Template.infos.helpers({
 
 Template.archive.helpers({
     archive: function tplArchiveArchive() {
-        var infos = Informations.findOne();
+        var infos = Informations.findOne(),
+            basicInfos = infos ? {_id: infos._id} : {},
+            toReturn = infos && infos.archive ? _.extend(basicInfos, infos.archive) : basicInfos;
 
-        return infos ? infos.archive : null;
+        return toReturn;
     },
 
     isActive: function tplArchiveIsActive() {
         if (arguments[0]) {
             return 'active ';
         }
+    },
+
+    isCheckedArchiveSkipDev: function tplArchiveIsChecked() {
+        var infos = Informations.findOne();
+
+        if (!infos || ! infos.archive) return;
+
+        if (infos.archive.skipDev) return 'checked';
+    },
+
+    isCheckedRequireDeps: function tplArchiveIsChecked() {
+        var infos = Informations.findOne();
+
+        if (!infos || ! infos.archive) return;
+
+        if (infos.archive.requireDeps) return 'checked';
+    },
+
+    isCheckedRequireDevDeps: function tplArchiveIsChecked() {
+        var infos = Informations.findOne();
+
+        if (!infos || ! infos.archive) return;
+
+        if (infos.archive.requireDevDeps) return 'checked';
+    }
+});
+
+Template.archive.events({
+    'blur input[type=text], change input[type=checkbox]': function tplArchiveBlur(ev, tpl) {
+        var data = {
+            directory: tpl.find('input#archive-directory-input').value,
+            format: tpl.find('input#archive-format-input').value,
+            prefixUrl: tpl.find('input#archive-prefixurl-input').value,
+            skipDev: tpl.find('input#archive-skipdev-input').checked ? true : false,
+            requireDeps: tpl.find('input#archive-requiredeps-input').checked ? true : false,
+            requireDevDeps: tpl.find('input#archive-requiredevdeps-input').checked ? true : false
+        };
+
+        // checks
+        if (!_.contains(['tar', 'zip'], data.format)) {
+            Materialize.toast("Format must be tar or zip, you filled " + data.format, 5000);
+            delete data.format;
+        }
+
+        // save
+        Informations.update({_id: this._id}, {$set: {archive: data}});
+
+        Meteor.call('generate');
+    },
+
+    'click button[name="resetRepo"]': function tplRepositoriesClickResetRepo(ev, tpl) {
+        _.each(tpl.findAll('input.addRepo'), function tplRepositoriesResatRepoEach(item) {
+            item.value = '';
+        });
+        tpl.find('.select-dropdown').value = 'vcs';
     }
 });
 

@@ -187,6 +187,23 @@ Meteor.methods({
 
             hasPackages: function ssrHasPackages() {
                 return Packages.find().count();
+            },
+
+            archive: function ssrArchive() {
+                var hp = Informations.findOne(),
+                    archive = hp && hp.archive ? hp.archive : null;
+
+                _.extend(archive, {
+                    skipDev: (archive.skipDev ? "true" : "false"),
+                    requireDeps: (archive.requireDeps ? "true" : "false"),
+                    requireDevDeps: (archive.requireDevDeps ? "true" : "false")
+                });
+
+                return archive;
+            },
+
+            hasArchive: function ssrHasArchive() {
+                return !!this.archive();
             }
         });
 
@@ -203,7 +220,7 @@ Meteor.methods({
         var modifiers = {},
             buildRunning = BuildRunning.findOne({}, {_id: true}),
             buildNeeded = BuildNeeded.findOne({}, {_id: true}),
-            phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir,
+            phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + saveDir + '/satis.json' + ' ' + Meteor.settings.buildDir + ' --skip-errors',
             // phpCmd = 'php ' + Meteor.settings.satisBinary + ' build ' + Meteor.settings.satisJson + ' ' + Meteor.settings.buildDir,
             childProcess = Npm.require('child_process'),
             exec = Meteor.wrapAsync(childProcess.exec);
