@@ -15,15 +15,16 @@ if (!saveDir
 }
 
 Meteor.startup(function serverOnStartup() {
+    console.log("startup");
     // init build collection
     if (!BuildRunning.find().count()) {
         BuildRunning.insert({running: 0});
     }
-
+console.log(BuildRunning.find().count());
     if (!BuildNeeded.find().count()) {
         BuildNeeded.insert({needed: 0});
     }
-
+console.log(BuildNeeded.find().count());
     (function initDb() {
         // create default satis file
         if (!fs.existsSync(Meteor.settings.satisJson)) {
@@ -57,9 +58,22 @@ Meteor.startup(function serverOnStartup() {
                 dataInfo.config['github-oauth'] = config;
             }
 
+            if (json.archive) {
+                var keys = _.keys(json.archive),
+                    archive = [];
+                _.each(keys, function initArchiveWithJsonContent(key) {
+                    archive.push({
+                        name: key,
+                        token: json.archive[key]
+                    });
+                });
+
+                dataInfo.archive = archive;
+            }
+
             Informations.insert(dataInfo);
 
-            console.log('Informations section provisionned title/homepage/description/config.github-oauth datas');
+            console.log('Informations section provisionned title/homepage/description/config.github-oauth/archive datas');
         }
 
         if (json.repositories

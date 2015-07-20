@@ -49,8 +49,9 @@ Template.action.helpers({
         var disabled = "disabled",
             build = BuildRunning.findOne();
 
-        if (build
-            && build.running === 0) {
+        if (!build
+            || (build
+            && build.running === 0)) {
             disabled = " waves-effect waves-light red accent-3 ";
         }
 

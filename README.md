@@ -28,7 +28,8 @@ In the settings.json file you have some configuration to customize:
 
 ## Todo
 
-* Manage this : 
+* remove insecure and autopublish packages
+* ~~Manage this~~ : 
  
 ``` 
    "config": {
@@ -44,9 +45,9 @@ In the settings.json file you have some configuration to customize:
 
 * Don't remove repository, but create a status field which will allow to get back a repo removed by error.
 
-* Manage Archive section
-* Manage Other kind of repositories than only "composer" type
-* When build failed, display message to all users (store last error only ?)
+* ~~Manage Archive section~~ 
+* ~~Manage Other kind of repositories than only "composer" type~~ vcs is now ok
+* ~~When build failed, display message to all users (store last error only ?)~~
 * Fix the button ForceBuild on top using pushpin of Materialize 
 * When editing a field (packages or repos) we have to click on validate, but we may forget so we will loose everything when going out the app or changing page: we should save data in db on blur, and ask for a generate only on click
  
