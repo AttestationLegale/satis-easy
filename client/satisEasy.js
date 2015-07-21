@@ -222,6 +222,28 @@ Template.archive.events({
             delete data.format;
         }
 
+        // a new build is needed ?
+        var currentArchive = Informations.findOne();
+        if (!currentArchive
+            || !currentArchive.archive) {
+            upBuildNeeded();
+        } else {
+            var newKeys = _.keys(data),
+                curKeys = _.keys(currentArchive.archive);
+
+            _.each(newKeys, function(key) {
+                if (!_.has(currentArchive.archive, key)) {
+                    upBuildNeeded();
+                    return;
+                }
+
+                if (data[key] !== currentArchive.archive[key]) {
+                    upBuildNeeded();
+                    return;
+                }
+            });
+        }
+
         // save
         Informations.update({_id: this._id}, {$set: {archive: data}});
 
