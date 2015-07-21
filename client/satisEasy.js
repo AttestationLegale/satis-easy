@@ -79,7 +79,8 @@ Template.action.events({
             return;
         }
 
-        Meteor.call('generate');
+        // ask for generate json and build satis
+        Meteor.call('generate', 1);
     }
 });
 
