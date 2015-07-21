@@ -38,7 +38,9 @@ Meteor.startup(function() {
 
         if (buildRunning
             && buildRunning.error) {
-            Materialize.toast("An error happened on server, ask your admin to look at the logs or in the BuildRunning collections", 10000);
+            // the toast is not a member of action template, so i don't know for instance how to bind an event from action template to the toast, so i use meteor methods which is not my prefered wish
+            Materialize.toast("An error happened on server, ask your admin to look at the logs or in the BuildRunning collections "
+                + ' <i onclick="javascript:Meteor.call(\'removeError\');" class="mdi-action-delete" style="cursor:pointer"></i>', 100000);
             console.warn(buildRunning.error.stack);
         }
     });
@@ -419,3 +421,4 @@ Template.packages_row.events({
         // don't generate file on remove. User must force build with required button. It's to prevent remove per error
     }
 });
+
