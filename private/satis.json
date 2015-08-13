@@ -20,11 +20,13 @@
     {{/unless}}
     ,
     "config": {
+        {{#if githubToken }}
         "github-oauth": {
             {{#each configGithubOauth}}
             "{{ name }}": "{{ token }}" {{#if isNotLast}}, {{/if}}
             {{/each}}
         }
+        {{/if}}
     }
     {{#if hasArchive}}
     ,

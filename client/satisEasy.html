@@ -67,18 +67,12 @@
             <label class="{{isActive homepage }}" for="homepage-input">Homepage</label>
         </div>
     </div>
-    <!--<div class="row">
-        {{#each configoauth}}
-        <div class="input-field col s3">
-            <input id="githubtoken-input-name-{{name}}" type="text" class="validate" value="{{ name }}">
-            <label class="{{isActive oauthname }}" for="githubtoken-input-name-{{ name }}">Name</label>
+    <div class="row">
+        <div class="input-field col s6">
+            <input id="githubtoken-input" type="text" class="validate" value="{{ getGithubtoken }}">
+            <label class="{{isActive getGithubtoken }}" for="githubtoken-input">Github Token</label>
         </div>
-        <div class="input-field col s3">
-            <input id="githubtoken-input-token[]" type="text" class="validate" value="{{ token }}">
-            <label class="{{isActive oauthtoken }}" for="githubtoken-input-token-{{ tokenvalue }}">Token</label>
-        </div>
-        {{/each}}
-    </div>-->
+    </div>
     <div class="row">
         <div class="col s3">
             <label>Minimum-stability</label>
@@ -90,7 +84,7 @@
                 <option value="stable" selected>stable</option>
             </select>
         </div>
-		</div>
+    </div>
     {{/with}}
 </template>
 
