@@ -20,11 +20,11 @@
     {{/unless}}
     ,
     "config": {
+        {{#if githubToken }}
         "github-oauth": {
-            {{#if githubToken }}
             "github.com": "{{ githubToken }}"
-            {{/if}}
         }
+        {{/if}}
     }
     {{#if hasArchive}}
     ,

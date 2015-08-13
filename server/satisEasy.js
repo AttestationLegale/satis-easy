@@ -146,7 +146,7 @@ Meteor.methods({
             },
 
             githubToken: function ssrConfigGithubOauth() {
-                var githubtoken = Informations.findOne() ? Informations.findOne().minimumStability : '';
+                var githubtoken = Informations.findOne() ? Informations.findOne().githubtoken : '';
 
                 return githubtoken;
             },
