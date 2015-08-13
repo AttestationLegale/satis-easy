@@ -22,7 +22,9 @@
     "config": {
         {{#if githubToken }}
         "github-oauth": {
-            "github.com": "{{ githubToken }}"
+            {{#each configGithubOauth}}
+            "{{ name }}": "{{ token }}" {{#if isNotLast}}, {{/if}}
+            {{/each}}
         }
         {{/if}}
     }

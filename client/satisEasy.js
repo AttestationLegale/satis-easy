@@ -161,6 +161,11 @@ Template.infos.events({
         upBuildNeeded();
     },
 
+    /*
+     * We manage only github and it should be in position 0
+     * @TODO we might check content of github-oauth index and update if exists or insert if new
+     * using this _.find(Informations.findOne().config['github-oauth'], function() { console.log(arguments);}) (//modify func code
+     */
     'blur #githubtoken-input': function tplInfosBlurFieldGithubtoken(ev, tpl) {
         var data = ev.currentTarget.value;
         if (this.config
@@ -170,11 +175,10 @@ Template.infos.events({
             return;
         }
 
-        Informations.update({_id: this._id}, {$set: {githubtoken: ev.currentTarget.value}});
+        Informations.update({_id: this._id}, {$set: {"config.github-oauth.0": {"name": "github.com", "token": ev.currentTarget.value}}});
 
         // Ask satis to build
         upBuildNeeded();
-
     },
 
     'change #minimumstability-type-input': function(ev, tpl) {
@@ -197,6 +201,20 @@ Template.infos.helpers({
         var infos = Informations.findOne();
 
         return infos;
+    },
+
+    /**
+     * because we manage only github.com we don't check if github-oauth.name == github.com
+     * @returns {*}
+     */
+    getGithubtoken: function() {
+        var infos = Informations.findOne();
+
+        if (infos.config && infos.config['github-oauth']) {
+            return _.first(infos.config['github-oauth']).token;
+        }
+
+        return undefined;
     },
 
     configoauth: function tplInfosConfigoauth() {
