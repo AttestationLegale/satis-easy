@@ -129,7 +129,8 @@ Template.infos.events({
 
         Informations.update({_id: this._id}, {$set: {title: ev.currentTarget.value}});
 
-        Meteor.call('generate');
+        // Ask satis to build
+        upBuildNeeded();
     },
 
     'blur #description-input': function tplInfosBlurFieldDescription(ev, tpl) {
@@ -142,7 +143,8 @@ Template.infos.events({
 
         Informations.update({_id: this._id}, {$set: {description: ev.currentTarget.value}});
 
-        Meteor.call('generate');
+        // Ask satis to build
+        upBuildNeeded();
     },
 
     'blur #homepage-input': function tplInfosBlurFieldHomepage(ev, tpl) {
@@ -155,21 +157,24 @@ Template.infos.events({
 
         Informations.update({_id: this._id}, {$set: {homepage: ev.currentTarget.value}});
 
-        Meteor.call('generate');
+        // Ask satis to build
+        upBuildNeeded();
     },
 
-    'blur .githubtoken-input': function tplInfosBlurFieldGithubtoken(ev, tpl) {
+    'blur #githubtoken-input': function tplInfosBlurFieldGithubtoken(ev, tpl) {
         var data = ev.currentTarget.value;
         if (this.config
             && this.config['github-oauth'] === data) return;
         if (!data.length) {
-            Materialize.toast("You must fill Homepage field", 5000);
+            Materialize.toast("You must fill Github token field", 5000);
             return;
         }
 
-        Informations.update({_id: this._id}, {$set: {homepage: ev.currentTarget.value}});
+        Informations.update({_id: this._id}, {$set: {githubtoken: ev.currentTarget.value}});
 
-        Meteor.call('generate');
+        // Ask satis to build
+        upBuildNeeded();
+
     },
 
     'change #minimumstability-type-input': function(ev, tpl) {
@@ -181,7 +186,9 @@ Template.infos.events({
 
         Informations.update({_id: this._id}, {$set: {"minimumStability": data}});
 
-        Meteor.call('generate');
+        // Ask satis to build
+        upBuildNeeded();
+
     }
 });
 

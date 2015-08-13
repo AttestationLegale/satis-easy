@@ -21,9 +21,9 @@
     ,
     "config": {
         "github-oauth": {
-            {{#each configGithubOauth}}
-            "{{ name }}": "{{ token }}" {{#if isNotLast}}, {{/if}}
-            {{/each}}
+            {{#if githubToken }}
+            "github": "{{ githubToken }}"
+            {{/if}}
         }
     }
     {{#if hasArchive}}

@@ -145,27 +145,10 @@ Meteor.methods({
               return ms;
             },
 
-            configGithubOauth: function ssrConfigGithubOauth() {
-                /*
-                 * create a fake collection with a new property: isNotLast that will allow to manage
-                 * the last ","
-                 */
-                var config = new Meteor.Collection(null),
-                    infos = Informations.findOne(),
-                    total = infos && infos.config && _.has(infos.config, 'github-oauth') ? _.size(infos.config['github-oauth']) : 0,
-                    counter = 0;
+            githubToken: function ssrConfigGithubOauth() {
+                var githubtoken = Informations.findOne() ? Informations.findOne().minimumStability : '';
 
-                if (total) {
-                    var keys = _.keys(infos.config['github-oauth']);
-                    _.each(keys, function ssrConfigEachOAuth(key) {
-                        var item = infos.config['github-oauth'][key];
-                        counter++;
-                        _.extend(item, {isNotLast: (counter < total)});
-                        config.insert(item);
-                    });
-                }
-
-                return config.find();
+                return githubtoken;
             },
 
             repositories: function ssrRepositories() {
