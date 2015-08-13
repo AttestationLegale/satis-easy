@@ -140,7 +140,7 @@ Meteor.methods({
             },
 
             minimumStability: function ssrMinimumStability() {
-              var ms = Informations.findOne() ? Information.findOne().minimumStability : Meteor.settings.public.information.minimumStability;
+              var ms = Informations.findOne() ? Informations.findOne().minimumStability : Meteor.settings.public.informations.minimumStability;
 
               return ms;
             },
