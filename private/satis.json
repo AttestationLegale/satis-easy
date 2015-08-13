@@ -22,7 +22,7 @@
     "config": {
         "github-oauth": {
             {{#if githubToken }}
-            "github": "{{ githubToken }}"
+            "github.com": "{{ githubToken }}"
             {{/if}}
         }
     }
