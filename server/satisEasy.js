@@ -139,11 +139,11 @@ Meteor.methods({
                 return hp;
             },
 
-			minimum-stability: function ssrMinimumStability() {
-				var ms = Informations.findOne() ? Information.findOne().minimum-stability : Meteor.settings.publics.information.minimum-stability;
+            minimumStability: function ssrMinimumStability() {
+              var ms = Informations.findOne() ? Information.findOne().minimumStability : Meteor.settings.public.information.minimumStability;
 
-				return ms;
-			}
+              return ms;
+            },
 
             configGithubOauth: function ssrConfigGithubOauth() {
                 /*

@@ -179,7 +179,7 @@ Template.infos.events({
             return;
         }
 
-        Informations.update({_id: this._id}, {$set: {"minimum-stability": data}});
+        Informations.update({_id: this._id}, {$set: {"minimumStability": data}});
 
         Meteor.call('generate');
     }
