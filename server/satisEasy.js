@@ -139,6 +139,12 @@ Meteor.methods({
                 return hp;
             },
 
+			minimum-stability: function ssrMinimumStability() {
+				var ms = Informations.findOne() ? Information.findOne().minimum-stability : Meteor.settings.publics.information.minimum-stability;
+
+				return ms;
+			}
+
             configGithubOauth: function ssrConfigGithubOauth() {
                 /*
                  * create a fake collection with a new property: isNotLast that will allow to manage

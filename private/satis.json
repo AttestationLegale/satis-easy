@@ -2,6 +2,7 @@
     "name": "{{ title }}",
     "homepage": "{{ homepage }}",
     "description": "{{ description }}",
+	"minimum-stability": "{{ minimum-stability }}"
     "repositories": [
 	{{#each repositories}}
         { "type": "{{ type }}", "url": "{{ url }}" } {{#if isNotLast}}, {{/if}}
