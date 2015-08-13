@@ -156,6 +156,32 @@ Template.infos.events({
         Informations.update({_id: this._id}, {$set: {homepage: ev.currentTarget.value}});
 
         Meteor.call('generate');
+    },
+
+    'blur .githubtoken-input': function tplInfosBlurFieldGithubtoken(ev, tpl) {
+        var data = ev.currentTarget.value;
+        if (this.config
+            && this.config['github-oauth'] === data) return;
+        if (!data.length) {
+            Materialize.toast("You must fill Homepage field", 5000);
+            return;
+        }
+
+        Informations.update({_id: this._id}, {$set: {homepage: ev.currentTarget.value}});
+
+        Meteor.call('generate');
+    },
+
+    'change #minimumstability-type-input': function(ev, tpl) {
+        var data = ev.currentTarget.value;
+        if (!_.contains(['dev', 'alpha', 'beta', 'RC', 'stable'], data)) {
+            Materialize.toast("You must select only available value", 5000);
+            return;
+        }
+
+        Informations.update({_id: this._id}, {$set: {"minimum-stability": data}});
+
+        Meteor.call('generate');
     }
 });
 
@@ -164,6 +190,19 @@ Template.infos.helpers({
         var infos = Informations.findOne();
 
         return infos;
+    },
+
+    configoauth: function tplInfosConfigoauth() {
+        var infos = Informations.findOne();
+
+        if (infos
+            && infos.config
+            && infos.config['github-oauth']) {
+
+            return infos.config['github-oauth'];
+        }
+
+        return [];
     }
 });
 
@@ -174,12 +213,6 @@ Template.archive.helpers({
             toReturn = infos && infos.archive ? _.extend(basicInfos, infos.archive) : basicInfos;
 
         return toReturn;
-    },
-
-    isActive: function tplArchiveIsActive() {
-        if (arguments[0]) {
-            return 'active ';
-        }
     },
 
     isCheckedArchiveSkipDev: function tplArchiveIsChecked() {

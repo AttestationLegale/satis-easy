@@ -69,11 +69,27 @@
     </div>
     <div class="row">
         {{#each configoauth}}
-        <div class="input-field col s6">
-            <input name="githubtoken-input-{{ tokenvalue }}" type="text" class="validate" value="{{ tokenvalue }}">
-            <label class="{{isActive githubtoken }}" for="githubtoken-input-{{ tokenvalue }}">{{ tokenname }}</label>
+        <div class="input-field col s3">
+            <input id="githubtoken-input-name-{{name}}" type="text" class="validate" value="{{ name }}">
+            <label class="{{isActive oauthname }}" for="githubtoken-input-name-{{ name }}">Name</label>
+        </div>
+        <div class="input-field col s3">
+            <input id="githubtoken-input-token[]" type="text" class="validate" value="{{ token }}">
+            <label class="{{isActive oauthtoken }}" for="githubtoken-input-token-{{ tokenvalue }}">Token</label>
         </div>
         {{/each}}
+    </div>
+    <div class="row">
+        <div class="input-field col m2">
+            <select name="type" id="minimumstability-type-input">
+                <option value="dev">dev</option>
+                <option value="alpha">alpha</option>
+                <option value="beta">beta</option>
+                <option value="RC">rc</option>
+                <option value="stable">stable</option>
+            </select>
+            <label>Minimum-stability</label>
+        </div>
     </div>
     {{/with}}
 </template>
